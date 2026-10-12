@@ -1,0 +1,18 @@
+{
+  "scheme": "https",
+  "status": 200,
+  "headers": [
+    [
+      "Content-Type",
+      "text/html"
+    ],
+    [
+      "Strict-Transport-Security",
+      "max-age=0"
+    ],
+    [
+      "Set-Cookie",
+      "demo=synthetic; SameSite=None"
+    ]
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "scope": "single response; heuristic lint, not a security grade",
+  "findings": [
+    {
+      "rule": "CSP_MISSING",
+      "severity": "review",
+      "detail": "No enforcing CSP; report-only policies do not enforce restrictions."
+    },
+    {
+      "rule": "FRAMING_POLICY_MISSING",
+      "severity": "review",
+      "detail": "No recognized frame-ancestors or X-Frame-Options protection."
+    },
+    {
+      "rule": "NOSNIFF_MISSING",
+      "severity": "review",
+      "detail": "X-Content-Type-Options should be reviewed for nosniff."
+    },
+    {
+      "rule": "HSTS_INACTIVE",
+      "severity": "review",
+      "detail": "Missing, ambiguous, invalid or zero HSTS max-age."
+    },
+    {
+      "rule": "REFERRER_POLICY_MISSING",
+      "severity": "info",
+      "detail": "No explicit Referrer-Policy; browser defaults still apply."
+    },
+    {
+      "rule": "COOKIE_SECURE_REVIEW",
+      "severity": "review",
+      "detail": "demo: Secure flag absent"
+    },
+    {
+      "rule": "COOKIE_HTTPONLY_REVIEW",
+      "severity": "review",
+      "detail": "demo: HttpOnly absent; assess whether JavaScript needs this cookie"
+    },
+    {
+      "rule": "COOKIE_SAMESITE_NONE",
+      "severity": "review",
+      "detail": "demo: SameSite=None without Secure"
+    }
+  ],
+  "status": 200
+}
