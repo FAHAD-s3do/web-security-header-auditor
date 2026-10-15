@@ -1,4 +1,8 @@
 {
+  "summary": {
+    "review": 7,
+    "info": 1
+  },
   "scope": "single response; heuristic lint, not a security grade",
   "findings": [
     {

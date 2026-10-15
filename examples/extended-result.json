@@ -1,0 +1,50 @@
+{
+  "summary": {
+    "review": 8,
+    "info": 0
+  },
+  "scope": "single response; heuristic lint, not a security grade",
+  "findings": [
+    {
+      "rule": "CSP_DUPLICATE_DIRECTIVE",
+      "severity": "review",
+      "detail": "script-src: first occurrence retained; later duplicates ignored"
+    },
+    {
+      "rule": "CSP_EVAL_REVIEW",
+      "severity": "review",
+      "detail": "Dynamic string evaluation allowed; assess whether it is required."
+    },
+    {
+      "rule": "CORS_WILDCARD_CREDENTIALS",
+      "severity": "review",
+      "detail": "Wildcard origin cannot grant credentialed browser access; browsers block this combination, not leak credentials."
+    },
+    {
+      "rule": "COOKIE_PREFIX_SECURE",
+      "severity": "review",
+      "detail": "__Host-demo: prefixed cookie requires Secure over HTTPS (local browser exceptions not modeled)"
+    },
+    {
+      "rule": "COOKIE_PREFIX_HOST",
+      "severity": "review",
+      "detail": "__Host-demo: host prefix requires Path=/ and no Domain attribute"
+    },
+    {
+      "rule": "COOKIE_SAMESITE_INVALID",
+      "severity": "review",
+      "detail": "__Host-demo: unrecognized SameSite value"
+    },
+    {
+      "rule": "COOKIE_SECURE_REVIEW",
+      "severity": "review",
+      "detail": "__Host-demo: Secure flag absent"
+    },
+    {
+      "rule": "COOKIE_HTTPONLY_REVIEW",
+      "severity": "review",
+      "detail": "__Host-demo: HttpOnly absent; assess whether JavaScript needs this cookie"
+    }
+  ],
+  "status": 200
+}
