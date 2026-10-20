@@ -48,7 +48,11 @@ def audit(headers, scheme='https'):
         policy = h.get('strict-transport-security', [''])[0]
         values = [p.strip().split('=',1) for p in policy.split(';')]
         ages = [p[1] for p in values if len(p)==2 and p[0].lower()=='max-age']
-        if len(ages)!=1 or not ages[0].isdigit() or int(ages[0])<=0:
+        # HTTP delta-seconds use ASCII digits. Avoid int(): Unicode digit
+        # characters and extremely long decimal strings can raise ValueError.
+        if (len(ages)!=1 or not ages[0] or
+                any(char not in '0123456789' for char in ages[0]) or
+                not any(char != '0' for char in ages[0])):
             add('HSTS_INACTIVE', 'review', 'Missing, ambiguous, invalid or zero HSTS max-age.')
     else:
         add('CLEARTEXT_HTTP', 'review', 'HTTP response; HSTS on this response would not establish HTTPS protection.')

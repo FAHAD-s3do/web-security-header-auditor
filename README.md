@@ -44,11 +44,17 @@ Reports remain heuristic: inspect the application before treating a configuratio
 
 ## Scope and limitations
 
+HSTS max-age linting accepts only nonempty ASCII decimal digits and checks for a
+nonzero value without converting to an integer. Unicode digits, signs, fractions,
+and exponent notation are rejected. Very long values cannot crash integer
+conversion, but passing this syntax check does not establish a browser's storage
+limit, effective expiration, or preload eligibility.
+
 Only header syntax heuristics are checked. CSP parsing is deliberately limited (first policy, no full browser evaluation); multiple policies, nonce/hash interaction and application requirements need manual assessment. Cookie checks do not identify session cookies. No HTML/meta policy parsing, redirect-chain checks, active CORS probing, TLS grading or cookie-jar evaluation. Static CORS checks cannot determine origin reflection or cross-origin data exposure. Live mode is a local CLI, not a hardened public URL-fetching service. Do not expose it as a server-side fetch endpoint. Network errors exit 2. By default, exit 0 means collection completed even if findings exist. With `--fail-on-review`, review findings exit 1; informational-only reports still exit 0. Collection, input and output errors exit 2.
 
 ## Validation
 
-17 unit tests passed locally on Python 3.12.14. Synthetic CLI examples were executed and results are included under `examples/`. No customer data, historical lab results or production effectiveness is claimed. CI configuration is supplied; remote CI status must be checked after publishing.
+21 unit tests passed locally on Python 3.12.14, including Unicode and long-decimal HSTS regression cases. Synthetic CLI examples were executed and results are included under `examples/`. No customer data, historical lab results or production effectiveness is claimed. CI configuration is supplied; remote CI status must be checked after publishing.
 
 ## Files
 
