@@ -40,7 +40,7 @@ python3 auditor.py --fixture examples/extended-headers.json --fail-on-review
 python3 auditor.py --url https://example.com --format html --output authorized-report.html
 ```
 
-Reports remain heuristic: inspect the application before treating a configuration as a vulnerability. Prefix checks are case-sensitive; duplicate cookie attributes still require manual interpretation.
+Reports remain heuristic: inspect the application before treating a configuration as a vulnerability. Cookie attribute names and values are trimmed around `=` before checks, so padded Path, Domain and SameSite settings are interpreted consistently. Prefix checks are case-sensitive; duplicate cookie attributes still require manual interpretation.
 
 ## Scope and limitations
 
@@ -54,7 +54,7 @@ Only header syntax heuristics are checked. CSP parsing is deliberately limited (
 
 ## Validation
 
-21 unit tests passed locally on Python 3.12.14, including Unicode and long-decimal HSTS regression cases. Synthetic CLI examples were executed and results are included under `examples/`. No customer data, historical lab results or production effectiveness is claimed. CI configuration is supplied; remote CI status must be checked after publishing.
+26 unit tests passed locally on Python 3.12.14, including cookie attribute whitespace, Unicode and long-decimal HSTS regression cases. Synthetic CLI examples were executed and results are included under `examples/`. No customer data, historical lab results or production effectiveness is claimed. CI configuration is supplied; remote CI status must be checked after publishing.
 
 ## Files
 
@@ -76,3 +76,4 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Secu
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Origin
+

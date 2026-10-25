@@ -71,7 +71,7 @@ def audit(headers, scheme='https'):
     for cookie in h.get('set-cookie', []):
         parts = [x.strip() for x in cookie.split(';')]
         name = parts[0].split('=',1)[0]
-        attrs = {x.split('=',1)[0].lower(): x.split('=',1)[1] if '=' in x else '' for x in parts[1:]}
+        attrs = {x.split('=',1)[0].strip().lower(): x.split('=',1)[1].strip() if '=' in x else '' for x in parts[1:]}
         keys=[x.split('=',1)[0].strip().lower() for x in parts[1:] if x]
         if len(keys)!=len(set(keys)):
             add('COOKIE_DUPLICATE_ATTRIBUTE','review',name + ': duplicate attributes require review')
@@ -136,3 +136,4 @@ def main():
         parser.exit(2, f'Cannot audit response: {exc}\n')
 
 if __name__=='__main__': main()
+
