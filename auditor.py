@@ -58,6 +58,15 @@ def audit(headers, scheme='https'):
         add('CLEARTEXT_HTTP', 'review', 'HTTP response; HSTS on this response would not establish HTTPS protection.')
     if not h.get('referrer-policy'):
         add('REFERRER_POLICY_MISSING','info','No explicit Referrer-Policy; browser defaults still apply.')
+    else:
+        recognized = {'no-referrer','no-referrer-when-downgrade','same-origin','origin',
+                      'strict-origin','origin-when-cross-origin','strict-origin-when-cross-origin','unsafe-url'}
+        policies = [token.strip() for value in h['referrer-policy'] for token in value.split(',')]
+        valid = [token for token in policies if token in recognized]
+        if not valid:
+            add('REFERRER_POLICY_INVALID','review','No recognized Referrer-Policy token; browser defaults or other policy sources may apply.')
+        elif valid[-1] == 'unsafe-url':
+            add('REFERRER_POLICY_UNSAFE_URL','review','Last recognized policy is unsafe-url; review cross-origin path/query disclosure. Actual sensitive data exposure requires context.')
     origins=h.get('access-control-allow-origin',[])
     credentials=h.get('access-control-allow-credentials',[])
     if len(origins)>1 or len(credentials)>1:
@@ -136,4 +145,5 @@ def main():
         parser.exit(2, f'Cannot audit response: {exc}\n')
 
 if __name__=='__main__': main()
+
 
