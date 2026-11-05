@@ -1,6 +1,6 @@
 # Web Security Header Auditor
 
-[![CI](https://github.com/FAHAD-s3do/web-security-header-auditor/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/FAHAD-s3do/web-security-header-auditor/actions/runs/40989657868) · [Latest successful main-branch run](https://github.com/FAHAD-s3do/web-security-header-auditor/actions/runs/40989657868)
+[![CI](https://github.com/FAHAD-s3do/web-security-header-auditor/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/FAHAD-s3do/web-security-header-auditor/actions) · [Workflow history](https://github.com/FAHAD-s3do/web-security-header-auditor/actions)
 
 ![Web Security Header Auditor workflow](assets/workflow.svg)
 
@@ -63,7 +63,7 @@ Only header syntax heuristics are checked. CSP parsing is deliberately limited (
 
 ## Validation
 
-31 unit tests passed locally on Python 3.12.14, including cookie attribute whitespace, Unicode and long-decimal HSTS regression cases. Synthetic CLI examples were executed and results are included under `examples/`. No customer data, historical lab results or production effectiveness is claimed. CI configuration is supplied; the main-branch run [passed](https://github.com/FAHAD-s3do/web-security-header-auditor/actions/runs/40989657868).
+31 unit tests passed locally on Python 3.12.14, including cookie attribute whitespace, Unicode and long-decimal HSTS regression cases. Synthetic CLI examples were executed and results are included under `examples/`. No customer data, historical lab results or production effectiveness is claimed. CI configuration is supplied; the live badge above reports current workflow status.
 
 ## Files
 
