@@ -44,6 +44,24 @@ def audit(headers, scheme='https'):
         add('FRAMING_POLICY_MISSING', 'review', 'No recognized frame-ancestors or X-Frame-Options protection.')
     if h.get('x-content-type-options', [''])[0].lower() != 'nosniff':
         add('NOSNIFF_MISSING', 'review', 'X-Content-Type-Options should be reviewed for nosniff.')
+    # Isolation and capability policies are context-dependent, so absence is
+    # informational. Invalid values are actionable because browsers may ignore
+    # the malformed policy altogether.
+    permissions = h.get('permissions-policy', [])
+    if not permissions:
+        add('PERMISSIONS_POLICY_MISSING', 'info', 'No Permissions-Policy response header; decide which browser features this application should restrict.')
+    elif any(not value.strip() for value in permissions):
+        add('PERMISSIONS_POLICY_EMPTY', 'review', 'Permissions-Policy is present but empty; verify that the intended feature restrictions are actually delivered.')
+    for header, allowed in (
+        ('cross-origin-opener-policy', {'unsafe-none', 'same-origin-allow-popups', 'same-origin'}),
+        ('cross-origin-embedder-policy', {'unsafe-none', 'require-corp', 'credentialless'}),
+        ('cross-origin-resource-policy', {'same-site', 'same-origin', 'cross-origin'}),
+    ):
+        values = h.get(header, [])
+        if len(values) > 1:
+            add('DUPLICATE_HEADER', 'review', header + ': duplicate values require manual browser-semantics review')
+        if values and values[0].strip().lower() not in allowed:
+            add('INVALID_CROSS_ORIGIN_POLICY', 'review', header + ': unrecognized policy value; the browser may ignore this protection.')
     if scheme == 'https':
         policy = h.get('strict-transport-security', [''])[0]
         values = [p.strip().split('=',1) for p in policy.split(';')]
@@ -99,6 +117,9 @@ def audit(headers, scheme='https'):
             add('COOKIE_HTTPONLY_REVIEW','review',name + ': HttpOnly absent; assess whether JavaScript needs this cookie')
         if attrs.get('samesite','').lower()=='none' and 'secure' not in attrs:
             add('COOKIE_SAMESITE_NONE','review',name + ': SameSite=None without Secure')
+    cache = ','.join(h.get('cache-control', [])).lower()
+    if h.get('set-cookie') and 'public' in {item.strip().split('=', 1)[0] for item in cache.split(',')}:
+        add('COOKIE_PUBLIC_CACHE_REVIEW', 'review', 'A response sets cookies and declares public caching; verify shared caches cannot store user-specific content.')
     summary={level:sum(f['severity']==level for f in findings) for level in ('review','info')}
     return dict(summary=summary,scope='single response; heuristic lint, not a security grade', findings=findings)
 
@@ -145,5 +166,6 @@ def main():
         parser.exit(2, f'Cannot audit response: {exc}\n')
 
 if __name__=='__main__': main()
+
 
 
